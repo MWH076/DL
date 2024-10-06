@@ -1,5 +1,5 @@
 const clientId = '1292562339702505522';
-const redirectUri = 'https://mwh076.github.io/DL/';
+const redirectUri = encodeURIComponent('https://mwh076.github.io/DL/');
 
 document.getElementById('login-btn').addEventListener('click', () => {
     const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify%20guilds`;
