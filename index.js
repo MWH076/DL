@@ -9,7 +9,7 @@ const serversDiv = document.getElementById('servers');
 const serverListDiv = document.getElementById('server-list');
 const loginBtn = document.getElementById('login-btn');
 
-loginBtn.href = `${apiEndpoint}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify%20guilds`;
+const loginUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify%20guilds`;
 
 window.onload = function () {
     const hash = window.location.hash;
@@ -43,7 +43,7 @@ async function displayServers() {
     } catch (error) {
         console.error('Error fetching servers:', error);
         alert('An error occurred. Please log in again.');
-        window.location.href = loginBtn.href;
+        window.location.href = loginUrl;
     }
 }
 
