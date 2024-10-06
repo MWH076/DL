@@ -2,7 +2,7 @@ const clientId = '1292562339702505522';
 const redirectUri = encodeURIComponent('https://mwh076.github.io/DL/');
 
 document.getElementById('login-btn').addEventListener('click', () => {
-    const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify%20guilds`;
+    const discordAuthUrl = 'https://discord.com/api/oauth2/authorize?client_id=1292562339702505522&redirect_uri=https%3A%2F%2Fmwh076.github.io%2FDL%2F&response_type=token&scope=identify%20guilds';
     window.location.href = discordAuthUrl;
 });
 
