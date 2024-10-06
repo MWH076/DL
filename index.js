@@ -9,7 +9,8 @@ const serversDiv = document.getElementById('servers');
 const serverListDiv = document.getElementById('server-list');
 const loginBtn = document.getElementById('login-btn');
 
-const loginUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify%20guilds`;
+const loginUrl = `${apiEndpoint}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify%20guilds`;
+loginBtn.href = loginUrl;
 
 window.onload = function () {
     const hash = window.location.hash;
