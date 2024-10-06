@@ -4,22 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://discord.com;">
     <title>Discord Login</title>
-    <link href="https://unpkg.com/@webpixels/css@1.2.6/dist/index.css" rel="stylesheet">
+    <link href="https://unpkg.com/@webpixels/css@1.0.0/dist/index.css" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
-    <div id="home" class="container py-5">
-        <h1>Welcome to the Discord Dashboard (Disc Lite)</h1>
-        <p>You must log in to view your server details.</p>
-        <a href="#" id="login-btn" class="btn btn-primary">Login with Discord</a>
-    </div>
+    <div class="container text-center my-5">
+        <h1>Welcome to the Discord Server Dashboard</h1>
+        <div id="home">
+            <p>To access your servers, please log in with Discord:</p>
+            <a id="login-btn" class="btn btn-primary" href="#">Login with Discord</a>
+        </div>
 
-    <div id="servers" class="container py-5 d-none">
-        <h1>Your Discord Servers</h1>
-        <div id="server-list" class="row">
+        <div id="dashboard" class="d-none">
+            <h2>Your Servers</h2>
+            <div id="guild-list" class="row">
+            </div>
         </div>
     </div>
 

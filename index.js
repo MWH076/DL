@@ -1,73 +1,45 @@
-const clientId = "1292562339702505522";
-const redirectUri = "https://mwh076.github.io/DL/";
-const apiEndpoint = "https://discord.com/api/oauth2/authorize";
-const serverEndpoint = "https://discord.com/api/users/@me/guilds";
-let accessToken = null;
+const clientId = '1292562339702505522';
+const redirectUri = 'https://mwh076.github.io/DL/';
 
-const homeDiv = document.getElementById('home');
-const serversDiv = document.getElementById('servers');
-const serverListDiv = document.getElementById('server-list');
-const loginBtn = document.getElementById('login-btn');
+document.getElementById('login-btn').addEventListener('click', () => {
+    const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify%20guilds`;
+    window.location.href = discordAuthUrl;
+});
 
-const loginUrl = `${apiEndpoint}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=identify%20guilds`;
-loginBtn.href = loginUrl;
+window.onload = async () => {
+    const fragment = new URLSearchParams(window.location.hash.slice(1));
+    const accessToken = fragment.get('access_token');
 
-window.onload = function () {
-    const hash = window.location.hash;
+    if (accessToken) {
+        document.getElementById('home').classList.add('d-none');
+        document.getElementById('dashboard').classList.remove('d-none');
 
-    if (hash) {
-        const params = new URLSearchParams(hash.replace('#', ''));
-        accessToken = params.get('access_token');
-
-        if (accessToken) {
-            displayServers();
-        } else {
-            console.error('No access token found.');
-        }
+        const guilds = await fetchGuilds(accessToken);
+        displayGuilds(guilds);
     }
 };
 
-async function displayServers() {
-    try {
-        const response = await fetch(serverEndpoint, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch servers. Token may be invalid or expired.');
+async function fetchGuilds(accessToken) {
+    const response = await fetch('https://discord.com/api/v10/users/@me/guilds', {
+        headers: {
+            Authorization: `Bearer ${accessToken}`
         }
+    });
+    const guilds = await response.json();
 
-        const servers = await response.json();
-        showServers(servers);
-    } catch (error) {
-        console.error('Error fetching servers:', error);
-        alert('An error occurred. Please log in again.');
-        window.location.href = loginUrl;
-    }
+    return guilds.filter(guild => guild.owner || (guild.permissions & 0x20) === 0x20);
 }
 
-function showServers(servers) {
-    homeDiv.classList.add('d-none');
-    serversDiv.classList.remove('d-none');
+function displayGuilds(guilds) {
+    const guildList = document.getElementById('guild-list');
+    guilds.forEach(guild => {
+        const guildCard = document.createElement('div');
+        guildCard.classList.add('col-md-4', 'server-card');
 
-    serverListDiv.innerHTML = '';
-
-    if (servers.length === 0) {
-        serverListDiv.innerHTML = '<p>You are not a part of any Discord servers with permissions.</p>';
-        return;
-    }
-
-    servers.forEach(server => {
-        const serverCard = document.createElement('div');
-        serverCard.classList.add('server-card');
-
-        serverCard.innerHTML = `
-            <h3>${server.name}</h3>
-            <p>Owner: ${server.owner ? 'Yes' : 'No'}</p>
-        `;
-
-        serverListDiv.appendChild(serverCard);
+        guildCard.innerHTML = `
+      <img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png" alt="${guild.name}" />
+      <h3>${guild.name}</h3>
+    `;
+        guildList.appendChild(guildCard);
     });
 }
